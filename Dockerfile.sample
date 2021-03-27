@@ -1,0 +1,11 @@
+FROM registry.access.redhat/ubi8/ubi-minimal:8.3-291
+# Never use “latest” tag, always specify a version
+
+# Do NOT run apt-update/os upgrades, etc. If needed, pull a newer image
+
+# should not be root user
+USER builder
+
+# In-Toto tools install
+
+END
