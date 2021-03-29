@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: job
+metadata:
+  name: {{ job_name }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: {{ container_name }}
+          image: {{ container_image }}
+          command: {{ buildstep_command }}
+          volumeMounts:
+            - name: config-vol
+              mountPath: /etc/config
+      volumes:
+        - name: {{ buildstep_config_name }}
+          configMap:
+            name: stepConfig
+      restartPolicy: OnFailure
+  completions: {{ job_completions || 1 }}
+  parallelism: {{ job_parallelism || 1 }}
+  backoffLimit: 6
