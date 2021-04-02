@@ -1,21 +1,63 @@
 apiVersion: batch/v1
 kind: job
 metadata:
-  name: {{ job_name }}
 spec:
-  template:
-    spec:
       containers:
-        - name: {{ container_name }}
-          image: {{ container_image }}
-          command: {{ buildstep_command }}
+        - name: {{ base_container_name }}
+          image: {{ base_container_image }}
+          command: in-toto-run --step-name {{ step_name }} --key $STEP_KEY --materials {{materials_volume_mount }} --products {{ products_volume_mount }} --password $KEY_PASSWORD --exclude $STEP_EXCLUDES --metadata_directory {{ metadata_volume_mount }} -- {{ step_command }}
+          env:
+            - name: IN_TOTO_ARTIFACT_BASE_PATH
+              valueFrom:
+                configMapRef:
+                  name: default_config
+                  key: in_toto_artifact_base_path
+            - name: IN_TOTO_ARTIFACT_EXCLUDE_PATTERNS
+              valueFrom:
+                configMapRef:
+                  name: default_config
+                  key: in_toto_artifact_exclude_patterns
+            - name: IN_TOTO_LINK_CMD_EXEC_TIMEOUT
+              valueFrom:
+                configMapRef:
+                  name: default_config
+                  key: in_toto_link_cmd_exec_timeout
+            - name: STEP_KEY
+              valueFrom:
+                configMapRef:
+                  name: step_config
+                  key: step_key
+            - name: KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: step_secrets
+                  key: key_password
+            - name: STEP_EXCLUDES
+              valueFrom:
+                configMapRef:
+                  name: step_config
+                  key: step_excludes
           volumeMounts:
-            - name: config-vol
-              mountPath: /etc/config
+            - name: default_config
+              mountPath: /etc/config/default
+            - name: step_config
+              mountPath: /etc/config/step
+            - name: step_materials
+              mountPath: "{{ materials_volume_mount }}"
+            - name: step_products
+              mountPath: "{{ products_volume_mount }}"
+            - name: step_metadata
+              mountPath: "{{ metadata_volume_mount }}"
       volumes:
-        - name: {{ buildstep_config_name }}
+        - name: default_config
           configMap:
-            name: stepConfig
+            name: default_config
+        - name: {{ step_config_name }}
+          configMap:
+          name: step_config
+        - "{{ materials_volume }}"
+        - "{{ products_volume }}"
+        - "{{ metadata_volume }}"
       restartPolicy: OnFailure
   completions: {{ job_completions || 1 }}
   parallelism: {{ job_parallelism || 1 }}
