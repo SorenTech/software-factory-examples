@@ -1,11 +1,16 @@
-FROM registry.access.redhat/ubi8/ubi-minimal:8.3-291
 # Never use “latest” tag, always specify a version
+# ?? ubi or ubi-minimal?
+FROM registry.access.redhat/ubi8/ubi:8.3-289
 
 # Do NOT run apt-update/os upgrades, etc. If needed, pull a newer image
 
-# should not be root user
+# user should not be root
 USER builder
 
 # In-Toto tools install
+# ?? Do we get these from pip? Do we build from source? Does that require a build pipeline? Where is the bottom turtle?
+pip install in-toto
+
+# Add authorized certificates/CAs
 
 END
