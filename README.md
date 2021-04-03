@@ -4,13 +4,13 @@ Samples and templates for setting up a secure software factory based on recommen
 
 ## What This Repository Includes:
 - A model for a base "Build Worker" container (`Dockerfile.sample`)
-- Examples of how to use Kubernetes Immutable ConfigMaps to inject enviornments and commands for different steps of a build pipeline (found in the `buildStepExamples` directory)
-- Examples of how to you might construct a pipeline using the `buildStepExamples` in each of:
+- An example of how to use a Kubernetes job object as the foundation for your build steps (`base-job.yaml`).
+- Examples of how to you might construct a pipeline in each of:
     - Argo
     - Tekton
     - Jenkins
 - An example of a terraform script for configuring a secure S3 bucket that can act as the storage repository for either your injested dependencies or your completed artefacts (`secureBucket`)
-- Example configurations for package managers to direct them to use attached, "local" repositories instead of trying to pull from the internet during builds (`packageManagerConfigs`)
+- Example configurations for major package managers to direct them to use attached, "local" repositories instead of trying to pull from the internet during builds (`packageManagerConfigs`)
 - An example of how to do offline signing using Notary (`offlineSigning`)
 
 
