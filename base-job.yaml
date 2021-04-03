@@ -54,7 +54,7 @@ spec:
             name: default_config
         - name: {{ step_config_name }}
           configMap:
-          name: step_config
+            name: step_config
         - "{{ materials_volume }}"
         - "{{ products_volume }}"
         - "{{ metadata_volume }}"
