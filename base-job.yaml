@@ -40,10 +40,13 @@ spec:
           volumeMounts:
             - name: default_config
               mountPath: /etc/config/default
+              readOnly: true
             - name: step_config
               mountPath: /etc/config/step
+              readOnly: true
             - name: step_materials
               mountPath: "{{ materials_volume_mount }}"
+              readOnly: true
             - name: step_products
               mountPath: "{{ products_volume_mount }}"
             - name: step_metadata
