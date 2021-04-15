@@ -1,0 +1,4 @@
+# /etc/apt/sources.list
+
+deb file:{{ source_repository_mount }} stable main {{ restricted_value | restricted }}
+deb-src file:{{ source_repository_mount }} stable main {{ restricted_value | restricted }}
