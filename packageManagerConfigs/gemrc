@@ -1,0 +1,10 @@
+# .gemrc
+
+:sources:
+- {{ source_repo_mount }}
+
+:update_sources: false
+
+:disable_default_gem_server: true
+
+install: --local
